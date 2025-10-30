@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="img/logo.avif" type="image/png">
+
+<title>Smash Burguer - O Melhor de Medianeira</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #111;
+    color: #f8f8f8;
+  }
+
+  /* HEADER */
+  header {
+    background: #d32f2f;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header img { height: 60px; }
+  header h1 { font-size: 1.8rem; margin: 0; color: white; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: url('https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+    position: relative;
+  }
+  .hero::after { content:""; position:absolute; inset:0; background:rgba(0,0,0,0.6); }
+  .hero-content { position: relative; z-index: 2; }
+  .hero h2 { font-size: 3rem; margin: 0; }
+  .hero p { margin: 15px 0; font-size: 1.2rem; }
+  .whatsapp-btn {
+    background: #25D366; color: white;
+    padding: 15px 25px; border-radius: 30px;
+    text-decoration: none; font-weight: bold;
+    transition: 0.3s; display: inline-block;
+  }
+  .whatsapp-btn:hover { background: #1eb857; }
+
+  /* CONTAINERS */
+  .container { max-width: 1000px; margin: 80px auto; padding: 0 20px; }
+  .section-title { text-align: center; font-size: 2rem; margin-bottom: 30px; }
+
+  /* PRODUTOS */
+  .grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .card {
+    background: #1e1e1e; border-radius: 12px;
+    overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    transition: 0.3s;
+  }
+  .card:hover { transform: translateY(-5px); }
+  .card img { width: 100%; height: 170px; object-fit: cover; }
+  .card-content { padding: 15px; }
+  .price { color: #ff9800; font-weight: bold; margin-top: 8px; }
+
+  /* HORÁRIOS */
+  .hours {
+    background: #181818;
+    padding: 60px 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 50px auto;
+  }
+  .hours h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  .hours table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .hours td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+  }
+  .hours td:first-child {
+    font-weight: bold;
+  }
+  .status {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  .open { color: #4caf50; }
+  .closed { color: #f44336; }
+
+  /* AVALIAÇÕES */
+  .reviews { background: #181818; padding: 60px 20px; text-align: center; }
+  .review {
+    max-width: 700px; margin: 20px auto;
+    background: #222; padding: 20px; border-radius: 10px; font-style: italic;
+  }
+  .review span { display: block; margin-top: 10px; color: #ff9800; }
+
+  /* CONTATO */
+  .contact { text-align: center; padding: 60px 20px; }
+
+  /* FOOTER */
+  footer { text-align: center; background: #d32f2f; padding: 15px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="img/logo.avif" alt="Logo Smash Burguer" onerror="this.style.display='none'">
+  <h1>Smash Burguer</h1>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2>O verdadeiro sabor do Smash 🍔</h2>
+    <p>Experimente os melhores hambúrgueres artesanais de Medianeira - PR</p>
+    <a class="whatsapp-btn" href="https://wa.me/554598299569" target="_blank">Pedir pelo WhatsApp</a>
+  </div>
+</section>
+
+<section class="container">
+  <h2 class="section-title">Nossos Lanches</h2>
+  <div id="productList" class="grid"></div>
+</section>
+
+<!-- 🕒 PLUGIN DE HORÁRIOS -->
+<section class="hours">
+  <h3>🕒 Horário de Atendimento</h3>
+  <div id="status" class="status"></div>
+  <table id="hoursTable"></table>
+</section>
+
+<section class="contact">
+  <h2 class="section-title">📍 Onde estamos</h2>
+  <p>São Cristóvão</p>
+  <p>Medianeira - PR</p>
+</section>
+
+<section class="reviews">
+  <h2 class="section-title">⭐ Avaliações</h2>
+  <div class="review">“O melhor smash da cidade!”<span>— Lucas R.</span></div>
+  <div class="review">“Atendimento rápido e o lanche vem quentinho!”<span>— Maria F.</span></div>
+</section>
+
+<section class="contact">
+  <h2 class="section-title">📞 Contato</h2>
+  <p>Telefone: 45 9829-9569</p>
+  <p>Instagram: @smashburguer</p>
+</section>
+
+<footer>
+  © 2025 Smash Burguer — Sabor que conquista Medianeira 🍟
+</footer>
+
+<script>
+  /* ======= PRODUTOS (do painel admin) ======= */
+  function renderProducts() {
+    const products = JSON.parse(localStorage.getItem("burgers")) || [];
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    if (products.length === 0) {
+      list.innerHTML = "<p style='text-align:center;'>Nenhum produto disponível no momento.</p>";
+      return;
+    }
+
+    products.forEach(p => {
+      list.innerHTML += `
+        <div class="card">
+          <img src="${p.imagem || 'https://via.placeholder.com/300x160'}" alt="${p.nome}">
+          <div class="card-content">
+            <h3>${p.nome}</h3>
+            <p>${p.descricao || ''}</p>
+            <div class="price">R$ ${Number(p.preco).toFixed(2)}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  /* ======= HORÁRIOS ======= */
+  const horarios = {
+    "Segunda-feira": "18:00 às 22:45",
+    "Terça-feira": "Não abre",
+    "Quarta-feira": "18:09 às 23:59",
+    "Quinta-feira": "18:00 às 23:30",
+    "Sexta-feira": "18:00 às 23:30",
+    "Sábado": "18:00 às 23:30",
+    "Domingo": "19:41 às 23:59"
+  };
+
+  const tabela = document.getElementById("hoursTable");
+  for (let dia in horarios) {
+    tabela.innerHTML += `
+      <tr>
+        <td>${dia}</td>
+        <td>${horarios[dia]}</td>
+      </tr>
+    `;
+  }
+
+  // Detectar se está aberto agora
+  function verificarStatus() {
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 0 = domingo, 1 = segunda...
+    const horaAtual = agora.getHours() + agora.getMinutes()/60;
+
+    const dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+    const hoje = dias[diaSemana];
+    const horarioHoje = horarios[hoje];
+
+    const status = document.getElementById("status");
+    if (horarioHoje === "Não abre") {
+      status.innerHTML = `<span class="closed">Fechado hoje</span>`;
+      return;
+    }
+
+    const [inicio, fim] = horarioHoje.split(" às ");
+    const [hInicio, mInicio] = inicio.split(":").map(Number);
+    const [hFim, mFim] = fim.split(":").map(Number);
+    const horaInicio = hInicio + mInicio/60;
+    const horaFim = hFim + mFim/60;
+
+    if (horaAtual >= horaInicio && horaAtual <= horaFim) {
+      status.innerHTML = `<span class="open">Aberto agora (${horarioHoje})</span>`;
+    } else {
+      status.innerHTML = `<span class="closed">Fechado (Hoje: ${horarioHoje})</span>`;
+    }
+  }
+
+  renderProducts();
+  verificarStatus();
+</script>
+</body>
+</html>
